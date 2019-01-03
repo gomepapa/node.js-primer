@@ -1,8 +1,11 @@
 const http = require('http');
 const fs = require('fs');
+const ejs = require('ejs');
+const url = require('url');
 
-let request;
-let response;
+const index_page = fs.readFileSync('./index.ejs', 'utf8');
+const other_page = fs.readFileSync('./other.ejs', 'utf8');
+const style_css = fs.readFileSync('./style.css', 'utf8');
 
 let server = http.createServer(getFromClient);
 
@@ -12,24 +15,55 @@ console.log('Server start!');
 // ↑↑ここまでメインプログラム↑↑
 
 // createServerの処理
-function getFromClient(req, res) {
-    request = req;
-    response = res;
+function getFromClient(request, response) {
+    let url_parts = url.parse(request.url);
+    let content;
 
-    fs.readFile(
-        './index.html'
-        , 'UTF-8'
-        , writeToResponse
-    );
-}
-
-// readFile完了後の処理
-function writeToResponse(error, data) {
-    let content = data.replace(/dummy_title/g, 'タイトルです').replace(/dummy_content/g, 'これがコンテンツです。');
-
-    response.writeHead(200, {
-        'Content-Type': 'text/html' 
-    });
-    response.write(content);
-    response.end();
+    switch (url_parts.pathname) {
+        case '/':
+            content = ejs.render(
+                index_page
+                , {
+                    title: 'Index'
+                    , content: 'これはテンプレートを使ったサンプルページです。'
+                }
+            );
+        
+            response.writeHead(200, {
+                'Content-Type': 'text/html'
+            });
+            response.write(content);
+            response.end();
+            break;
+        
+        case '/other':
+            content = ejs.render(
+                other_page
+                , {
+                    title: 'other'
+                    , content: 'これは新しく用意したページです。'
+                }
+            );
+            response.writeHead(200, {
+                'Content-Type': 'text/html'
+            });
+            response.write(content);
+            response.end();
+            break;
+        
+        case '/style.css':
+            response.writeHead(200, {
+                'Content-Type': 'text/css'
+            });
+            response.write(style_css);
+            response.end();
+            break;
+        
+        default:
+            response.writeHead(200, {
+                'Content-Type': 'text/plain'
+            });
+            response.end('no page...');
+            break;
+    }
 }
