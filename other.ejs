@@ -9,6 +9,15 @@
         <h1><%= title %></h1>
         <div role="main">
             <p><%= content %></p>
+            <p>
+                <table>
+                    <tbody>
+                        <% for (let key in data) { %>
+                            <%- include('data_item', {key: key, val: data[key]}) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </p>
         </div>
     </body>
 </html>

@@ -15,3 +15,21 @@ p {
     font-size: 14pt;
     margin: 0px 20px;
 }
+
+table {
+    margin: 20px;
+}
+
+table tr th {
+    background-color: #999999;
+    color: #ffffff;
+    text-align: center;
+    padding: 3px 10px;
+}
+
+table tr td {
+    background-color: #eeeeee;
+    color: #666666;
+    text-align: left;
+    padding: 3px 10px;
+}

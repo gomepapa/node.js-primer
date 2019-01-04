@@ -8,16 +8,48 @@
     <body>
         <h1><%= title %></h1>
         <div role="main">
-            <p><%= content %></p>
+            <p><%= data.content %></p>
             <p>
                 <a href="/other">Other Pageに移動 &gt;&gt;</a>
             </p>
+            <p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>伝言です！</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= data.message %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </p>
+            <p>
+                your last message: <%= data.cookie_data %>
+            </p>
+            <form method="POST" action="/">
+                <p>
+                    MESSAGE <input type="text" name="message">
+                    <button type="submit">送信</button>
+                </p>
+            </form>
             <form method="POST" action="/other">
                 <p>
                     <input type="text" name="msg">
                     <button type="submit">Click</button>
                 </p>
             </form>
+            <p>
+                <table>
+                    <tbody>
+                        <% for (let key in data.tableData) { %>
+                            <%- include('data_item', {key: key, val: [data.tableData[key]]}) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </p>
         </div>
     </body>
 </html>
