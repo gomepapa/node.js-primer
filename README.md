@@ -9,8 +9,8 @@ https://www.amazon.co.jp/dp/4798055220
 ```
 node.js-primer/
 ├ app               # Node.jsの基礎
-├ mini_board        # Node.jsで作成したミニ掲示板
 ├ express-app       # Expressの基礎
+├ mini_board        # Node.jsで作成したミニ掲示板
 ├ .gitignore        # Git管理対象外リスト
 └ README.md         # リポジトリの説明
 ```
