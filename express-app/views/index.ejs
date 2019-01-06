@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="desctiption" content=""><!-- 検索エンジンの検索結果に引用。キーワードを散りばめてSEO対策。 -->
+        <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
+        <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="./bootstrap.min.css">
+        <title><%= title %></title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-primary"><%= title %></h1>
+                    <div role="main">
+                        <p class="text-secondary">
+                            <%- content %>
+                        </p>
+                        <p>
+                            <a href="<%= link.href %>"><%= link.text %></a>
+                        </p>
+                        <p>
+                            <table class="table">
+                                <tbody>
+                                    <% for (let key in data) { %>
+                                        <%- include('data_item', {key: key, val: data[key]}) %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <form method="POST" action="/">
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" name="message" class="form-control">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-outline-primary">送信</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
