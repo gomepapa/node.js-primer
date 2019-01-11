@@ -52,6 +52,7 @@ app.post('/', (req, res) => {
                 href: url
                 , text: '別のページに移動'
             }
+            , data: data
         }
     );
 });
@@ -74,6 +75,7 @@ app.get('/other', (req, res) => {
                 href: '/'
                 , text: 'トップへ戻る'
             }
+            , data: data
         }
     );
 });
