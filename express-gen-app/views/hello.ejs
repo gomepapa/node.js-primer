@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="desctiption" content=""><!-- 検索エンジンの検索結果に引用。キーワードを散りばめてSEO対策。 -->
+    <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <%= title %>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p id="msg">
+                    <%- content %>
+                </p>
+            </div>
+        </div>
+        <form method="POST" action="/hello/post">
+            <div class="row">
+                <div class="col-5">
+                    <input type="text" class="form-control" name="message">
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary">送信</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <input type="text" name="num" id="num" class="form-control">
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-success" id="btn-get">GET!</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="/javascripts/jquery.min.js"></script>
+    <script>
+        document.getElementById('btn-get').addEventListener('click', () => {
+            $.getJSON('/ajax?id=' + document.getElementById('num').value, (json) => {
+                let msg = '<table class="table table-bordered">'
+                    + '<tbody>'
+                    + '<tr>'
+                    + '<th>名前</th><td>' + json.name + '</td>'
+                    + '</tr>'
+                    + '<tr>'
+                    + '<th>年齢</th><td>' + json.age + '</td>'
+                    + '</tr>'
+                    + '<tr>'
+                    + '<th>メール</th><td>' + json.mail + '</td>'
+                    + '</tr>'
+                    + '</tbody>'
+                    + '</table>';
+
+                document.getElementById('msg').innerHTML = msg;
+            });
+        });
+    </script>
+</body>
+
+</html>
