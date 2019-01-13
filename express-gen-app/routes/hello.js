@@ -1,5 +1,8 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const https = require('https');
+const parseString = require('xml2js').parseString;
 
 router.get('/', (req, res, next) => {
     let name = req.query.name;
@@ -18,20 +21,40 @@ router.get('/', (req, res, next) => {
         msg = 'Last Message: ' + req.session.message;
     }
 
-    let data = {
-        title: 'Hello!'
-        , content: '<p>'
-            + 'これは、サンプルのコンテンツです。<br>'
-            + 'this is sanmple content.<br>'
-            + 'あなたの名前は、' + name + 'です。<br>'
-            + 'メールアドレスは、' + mail + 'です。'
-            + '</p>'
-            + '<p>'
-            + msg
-            + '</p>'
+    const opt = {
+        host: 'news.google.com'
+        , port: 443
+        , path: '/rss?ie=UTF-8&oe=UTF-8&hl=ja&gl=JP&ceid=JP:ja'
     };
 
-    res.render('hello', data);
+    https.get(opt, (res2) => {
+        let body = '';
+
+        res2.on('data', (data) => {
+            body += data;
+        });
+
+        res2.on('end', () => {
+            parseString(body.trim(), (err, result) => {
+                let data = {
+                    title: 'Hello!'
+                    , content: '<p>'
+                        + 'これは、サンプルのコンテンツです。<br>'
+                        + 'this is sanmple content.<br>'
+                        + 'あなたの名前は、' + name + 'です。<br>'
+                        + 'メールアドレスは、' + mail + 'です。'
+                        + '</p>'
+                        + '<p>'
+                        + msg
+                        + '</p>'
+                        + 'Google News'
+                    , content_rss: result.rss.channel[0].item
+                };
+
+                res.render('hello', data);
+            });
+        });
+    });
 });
 
 router.post('/post', (req, res, next) => {
@@ -42,6 +65,7 @@ router.post('/post', (req, res, next) => {
     let data = {
         title: 'Hello!'
         , content: 'あなたは、「' + msg + '」と送信しました。'
+        , content_rss: null
     };
 
     res.render('hello', data);

@@ -46,6 +46,21 @@
                 </div>
             </div>
         </form>
+        <div class="row">
+            <div class="col">
+                <% if (content_rss !== null) { %>
+                <ol class="list-group">
+                    <% for (let i in content_rss) { %>
+                    <% let obj = content_rss[i]; %>
+                    <li class="list-group-item">
+                        <a href="<%= obj.link %>">
+                            <%= obj.title %></a>
+                    </li>
+                    <% } %>
+                </ol>
+                <% } %>
+            </div>
+        </div>
     </div>
 
     <script src="/javascripts/jquery.min.js"></script>
