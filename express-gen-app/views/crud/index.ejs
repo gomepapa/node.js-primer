@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="desctiption" content=""><!-- 検索エンジンの検索結果に引用。キーワードを散りばめてSEO対策。 -->
+    <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <%= title %>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                        <% for (var i in content_db) { %>
+                        <tr>
+                            <% var obj = content_db[i]; %>
+                            <th>
+                                <%= obj.ID %>
+                            </th>
+                            <td>
+                                <%= obj.NAME %>
+                            </td>
+                            <td>
+                                <%= obj.MAIL %>
+                            </td>
+                            <td>
+                                <%= obj.AGE %>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

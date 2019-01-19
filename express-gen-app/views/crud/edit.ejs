@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="desctiption" content=""><!-- 検索エンジンの検索結果に引用。キーワードを散りばめてSEO対策。 -->
+    <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <%= title %>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <%= content %>
+                </p>
+            </div>
+        </div>
+        <form method="POST" action="/crud/edit">
+            <div class="row">
+                <div class="col">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>NAME</th>
+                                <td>
+                                    <input type="text" name="name" class="form-control" value="<%= mydata.NAME %>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>MAIL</th>
+                                <td>
+                                    <input type="text" name="mail" class="form-control" value="<%= mydata.MAIL %>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>AGE</th>
+                                <td>
+                                    <input type="text" name="age" class="form-control" value="<%= mydata.AGE %>">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">更新</button>
+                    <input type="hidden" name="id" value="<%= mydata.ID %>">
+                </div>
+            </div>
+        </form>
+</body>
+
+</html>

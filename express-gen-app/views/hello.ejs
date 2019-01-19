@@ -61,6 +61,25 @@
                 <% } %>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                        <% for (var i in content_db) { %>
+                        <tr>
+                            <% var obj = content_db[i]; %>
+                            <th>
+                                <%= obj.BANK_CODE %>
+                            </th>
+                            <td>
+                                <%= obj.BANK_NAME %>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="/javascripts/jquery.min.js"></script>

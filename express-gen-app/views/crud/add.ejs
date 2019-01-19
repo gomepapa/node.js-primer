@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="desctiption" content=""><!-- 検索エンジンの検索結果に引用。キーワードを散りばめてSEO対策。 -->
+    <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <%= title %>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <%= content %>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form method="POST" action="/crud/add">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>NAME</th>
+                                <td>
+                                    <input type="text" name="name" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>MAIL</th>
+                                <td>
+                                    <input type="text" name="mail" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>AGE</th>
+                                <td><input type="number" name="age" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="submit" class="btn btn-primary">作成</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

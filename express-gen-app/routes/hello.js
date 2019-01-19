@@ -4,6 +4,13 @@ const router = express.Router();
 const https = require('https');
 const parseString = require('xml2js').parseString;
 
+const oracledb = require('oracledb');
+const oracle_setting = {
+    user: 'ACCOUNT'
+    , password: 'account'
+    , connectString: 'ORCL'
+};
+
 router.get('/', (req, res, next) => {
     let name = req.query.name;
     let mail = req.query.mail;
@@ -36,22 +43,48 @@ router.get('/', (req, res, next) => {
 
         res2.on('end', () => {
             parseString(body.trim(), (err, result) => {
-                let data = {
-                    title: 'Hello!'
-                    , content: '<p>'
-                        + 'これは、サンプルのコンテンツです。<br>'
-                        + 'this is sanmple content.<br>'
-                        + 'あなたの名前は、' + name + 'です。<br>'
-                        + 'メールアドレスは、' + mail + 'です。'
-                        + '</p>'
-                        + '<p>'
-                        + msg
-                        + '</p>'
-                        + 'Google News'
-                    , content_rss: result.rss.channel[0].item
-                };
+                oracledb.getConnection(
+                    oracle_setting
+                    , (err, connection) => {
+                        if (err) {
+                            console.error(err.message);
+                            return;
+                        }
 
-                res.render('hello', data);
+                        connection.execute(
+                            'SELECT * FROM M_BANK'
+                            , []
+                            , { outFormat: oracledb.OBJECT }
+                            , (err, oraData) => {
+                                if (err) {
+                                    console.error(err.message);
+                                    doRelease(connection);
+                                    return;
+                                }
+
+                                let data = {
+                                    title: 'Hello!'
+                                    , content: '<p>'
+                                        + 'これは、サンプルのコンテンツです。<br>'
+                                        + 'this is sanmple content.<br>'
+                                        + 'あなたの名前は、' + name + 'です。<br>'
+                                        + 'メールアドレスは、' + mail + 'です。'
+                                        + '</p>'
+                                        + '<p>'
+                                        + msg
+                                        + '</p>'
+                                        + 'Google News'
+                                    , content_rss: result.rss.channel[0].item
+                                    , content_db: oraData.rows
+                                };
+
+                                res.render('hello', data);
+
+                                doRelease(connection);
+                            }
+                        )
+                    }
+                );
             });
         });
     });
@@ -72,3 +105,11 @@ router.post('/post', (req, res, next) => {
 });
 
 module.exports = router;
+
+function doRelease(connection) {
+    connection.close((err) => {
+        if (err) {
+            console.error(err.message);
+        }
+    });
+}
