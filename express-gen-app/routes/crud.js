@@ -48,6 +48,12 @@ router.get('/add', (req, res, next) => {
     const data = {
         title: 'CRUD/Add'
         , content: '新しいデータを入力してください。'
+        , form: {
+            name: ''
+            , mail: ''
+            , age: 0
+        }
+        , valid: {}
     };
 
     res.render('crud/add', data);
@@ -55,37 +61,64 @@ router.get('/add', (req, res, next) => {
 
 // 新規登録フォーム送信の処理
 router.post('/add', (req, res, next) => {
+    req.check('name', 'NAMEは必ず入力してください。').notEmpty();
+    req.check('mail', 'MAILはメールアドレスを入力してください。').isEmail();
+    req.check('age', 'AGEは年齢(整数)を入力してください。').isInt();
+
     let nm = req.body.name;
     let ml = req.body.mail;
     let ad = req.body.age;
 
-    oracledb.getConnection(oracle_setting)
-        .then((conn) => {
-            return conn.execute(
-                `INSERT INTO mydata
-            (
-                id
-                , name
-                , mail
-                , age
-            )
-            VALUES
-            (
-                (SELECT NVL(MAX(id), 0) + 1 FROM mydata)
-                , :name
-                , :mail
-                , :age
-            )`
-                , [nm, ml, ad]
-            ).then((result) => {
-                conn.commit();
-                doRelease(conn);
-                res.redirect('/crud');
-            }).catch((err) => {
-                doRelease(conn)
-                console.error(err);
-            });
-        });
+    req.getValidationResult().then(
+        (result) => {
+            if (!result.isEmpty()) {
+                let vali_data = {};
+                let result_arr = result.array();
+                result_arr.forEach((ele) => {
+                    vali_data[ele.param + '-valid-class'] = 'is-invalid';
+                    vali_data[ele.param + '-valid'] = '<div class="invalid-feedback">' + ele.msg + '</div>';
+                });
+
+                const data = {
+                    title: 'CRUD/Add'
+                    , content: '入力内容を確認してください。'
+                    , form: req.body
+                    , valid: vali_data
+                }
+
+                res.render('crud/add', data);
+
+            } else {
+                oracledb.getConnection(oracle_setting)
+                    .then((conn) => {
+                        return conn.execute(
+                            `INSERT INTO mydata
+                            (
+                                id
+                                , name
+                                , mail
+                                , age
+                            )
+                            VALUES
+                            (
+                                (SELECT NVL(MAX(id), 0) + 1 FROM mydata)
+                                , :name
+                                , :mail
+                                , :age
+                            )`
+                            , [nm, ml, ad]
+                        ).then((result) => {
+                            conn.commit();
+                            doRelease(conn);
+                            res.redirect('/crud');
+                        }).catch((err) => {
+                            doRelease(conn)
+                            console.error(err);
+                        });
+                    });
+            }
+        }
+    );
 });
 
 // 指定IDのデータを表示する

@@ -7,47 +7,46 @@
     <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- tel・adress・mailadress文字列の自動リンクを制御 -->
     <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <title>
-        <%= title %>
-    </title>
+    <title><%= title %></title>
 </head>
 
 <body>
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>
-                    <%= title %>
-                </h1>
+                <h1><%= title %></h1>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <p>
-                    <%= content %>
-                </p>
+                <p><%= content %></p>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <form method="POST" action="/crud/add">
+                <form method="POST" action="/crud/add" novalidate>
                     <table class="table">
                         <tbody>
                             <tr>
                                 <th>NAME</th>
                                 <td>
-                                    <input type="text" name="name" class="form-control">
+                                    <input type="text" name="name" class="form-control <% if (valid.hasOwnProperty('name-valid-class')) { %><%= valid['name-valid-class'] %><% } %>" value="<%= form.name %>" required>
+                                    <% if (valid.hasOwnProperty('name-valid')) { %><%- valid['name-valid'] %><% } %>
                                 </td>
                             </tr>
                             <tr>
                                 <th>MAIL</th>
                                 <td>
-                                    <input type="text" name="mail" class="form-control">
+                                    <input type="text" name="mail" class="form-control <% if (valid.hasOwnProperty('mail-valid-class')) { %><%= valid['mail-valid-class'] %><% } %>" value="<%= form.mail %>" required>
+                                    <% if (valid.hasOwnProperty('mail-valid')) { %><%- valid['mail-valid'] %><% } %>
                                 </td>
                             </tr>
                             <tr>
                                 <th>AGE</th>
-                                <td><input type="number" name="age" class="form-control"></td>
+                                <td>
+                                    <input type="text" name="age" class="form-control <% if (valid.hasOwnProperty('age-valid-class')) { %><%= valid['age-valid-class'] %><% } %>" value="<%= form.age %>" required>
+                                    <% if (valid.hasOwnProperty('age-valid')) { %><%- valid['age-valid'] %><% } %>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
